@@ -1,0 +1,71 @@
+apply plugin: 'com.android.application'
+
+apply plugin: 'module-api-ag-extension'
+apply plugin: 'arbitrarygen'
+
+android {
+    compileSdkVersion rootProject.ext.dependencies['compileSdkVersion']
+    buildToolsVersion rootProject.ext.dependencies['buildToolsVersion']
+
+    defaultConfig {
+        minSdkVersion rootProject.ext.dependencies['minSdkVersion']
+        targetSdkVersion rootProject.ext.dependencies['targetSdkVersion']
+        versionCode rootProject.ext.dependencies['versionCode']
+        versionName rootProject.ext.dependencies['versionName']
+
+        testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
+
+    }
+    buildTypes {
+        release {
+            minifyEnabled false
+            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+        }
+    }
+
+    sourceSets {
+        main {
+            java {
+                srcDirs = ['src/main/java/', 'build/generated/source/ag-gen']
+            }
+        }
+    }
+}
+
+dependencies {
+    compile fileTree(dir: 'libs', include: ['*.jar'])
+    androidTestCompile('com.android.support.test.espresso:espresso-core:2.2.2', {
+        exclude group: 'com.android.support', module: 'support-annotations'
+    })
+    compile 'com.android.support:appcompat-v7:25.1.0'
+    testCompile 'junit:junit:4.12'
+
+    provided 'com.google.protobuf:protobuf-java:3.0.0'
+
+    compile project(':api')
+    compile project(':module-first')
+    compile project(':module-second')
+    compile project(':group-module:module-a')
+    compile project(':group-module:module-b')
+
+    compile rootProject.ext.dependencies['module-api']
+}
+
+arbitraryGen {
+    templateDir "${project.rootDir.getAbsolutePath()}/ag-template"
+    srcDir "${project.projectDir.absolutePath}/ag-datasrc"
+    destDir "$buildDir/generated/source/ag-gen"
+
+    logger {
+        debug true
+        toFile true
+        printTag false
+        path "$buildDir/outputs/logs/ag.log"
+    }
+    ext {
+        moduleApi {
+            srcDir "${project.projectDir.absolutePath}/src/main/java/cc/suitalk/moduleapi/sample"
+            destDir "${project.rootProject.projectDir.absolutePath}/api/build/generated/source/ag-gen"
+        }
+    }
+}

@@ -1,0 +1,3 @@
+include ':app', ':lib-stub', ':api', ':module-first', ':module-second'
+
+include ':group-module:module-a', ':group-module:module-b'

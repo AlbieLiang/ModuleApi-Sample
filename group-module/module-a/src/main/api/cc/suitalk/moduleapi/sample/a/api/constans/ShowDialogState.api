@@ -1,0 +1,9 @@
+package cc.suitalk.moduleapi.sample.a.api.constans;
+
+/**
+ * Created by albieliang on 2018/2/14.
+ */
+
+public enum ShowDialogState {
+    SHOW, HIDE
+}

@@ -1,0 +1,10 @@
+package cc.suitalk.moduleapi.sample.a.api;
+
+/**
+ * Created by albieliang on 2018/2/14.
+ */
+
+public interface StorageKey {
+    String ShowDialog_Type = "type";
+    String ShowDialog_State = "state";
+}
